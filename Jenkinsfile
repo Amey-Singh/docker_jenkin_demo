@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        git branch: 'main', url: GIT_REPOSITORY_URL
+                        git branch: 'master', url: GIT_REPOSITORY_URL
                     } catch (Exception e) {
                         echo "Failed to clone repository: ${e.message}"
                         error "Failed to clone repository"
