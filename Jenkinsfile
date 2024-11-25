@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        GIT_REPOSITORY_URL = 'https://github.com/Amey-Singh/docker_jenkis_demo-.git'
+        GIT_REPOSITORY_URL = 'https://github.com/Amey-Singh/docker_jenkin_demo.git'
         DOCKER_IMAGE_NAME = 'AmeySingh/docker_jenkis_demo'
         IMAGE_TAG = '1.0'
     }
@@ -9,7 +9,6 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
-                    script {
                     withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
                         sh """
                             git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@${GIT_REPOSITORY_URL.replace('https://', '')} .
@@ -36,9 +35,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Use 'withCredentials' block to securely fetch Docker credentials
                         withCredentials([usernamePassword(credentialsId: 'my-docker-hub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            // Explicit login before push
                             sh """
                                 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                                 docker push ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
@@ -53,4 +50,3 @@ pipeline {
         }
     }
 }
-
