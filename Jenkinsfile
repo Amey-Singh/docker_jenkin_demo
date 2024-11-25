@@ -9,11 +9,11 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 script {
-                    try {
-                        git branch: 'master', url: GIT_REPOSITORY_URL
-                    } catch (Exception e) {
-                        echo "Failed to clone repository: ${e.message}"
-                        error "Failed to clone repository"
+                    script {
+                    withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
+                        sh """
+                            git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@${GIT_REPOSITORY_URL.replace('https://', '')} .
+                        """
                     }
                 }
             }
